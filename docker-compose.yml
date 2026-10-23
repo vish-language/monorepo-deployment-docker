@@ -1,0 +1,20 @@
+services:
+  api:
+    image: ${DOCKER_REGISTRY:-ghcr.io}/${IMAGE_NAMESPACE:-vish-language}/monorepo-api:${IMAGE_TAG:-latest}
+    build:
+      context: .
+      dockerfile: apps/api/Dockerfile
+    ports:
+      - "3000:3000"
+    restart: unless-stopped
+
+  web:
+    image: ${DOCKER_REGISTRY:-ghcr.io}/${IMAGE_NAMESPACE:-vish-language}/monorepo-web:${IMAGE_TAG:-latest}
+    build:
+      context: .
+      dockerfile: apps/web/Dockerfile
+    ports:
+      - "3001:3001"
+    depends_on:
+      - api
+    restart: unless-stopped
